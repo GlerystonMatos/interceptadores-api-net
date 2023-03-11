@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Test", "5-Test", "{60C22E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interceptadores.CrossCutting", "Interceptadores.CrossCutting\Interceptadores.CrossCutting.csproj", "{23B31715-AF4F-4E37-9DB6-59BBEFEAB874}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interceptadores.Auditoria", "Interceptadores.Auditoria\Interceptadores.Auditoria.csproj", "{8438A279-5F4C-42C8-A2F9-5B4A63ADB7FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{23B31715-AF4F-4E37-9DB6-59BBEFEAB874}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23B31715-AF4F-4E37-9DB6-59BBEFEAB874}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23B31715-AF4F-4E37-9DB6-59BBEFEAB874}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8438A279-5F4C-42C8-A2F9-5B4A63ADB7FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8438A279-5F4C-42C8-A2F9-5B4A63ADB7FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8438A279-5F4C-42C8-A2F9-5B4A63ADB7FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8438A279-5F4C-42C8-A2F9-5B4A63ADB7FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{2FE6A37F-EAA1-4B20-B829-00EB6AD55B0C} = {A3E34A75-8765-49F5-81EE-8FA983527479}
 		{0B7B0E5C-7341-47A8-A7E9-724BFCF003A5} = {F19C0747-4728-4A88-99D4-6DECFB8189BF}
 		{23B31715-AF4F-4E37-9DB6-59BBEFEAB874} = {A3E34A75-8765-49F5-81EE-8FA983527479}
+		{8438A279-5F4C-42C8-A2F9-5B4A63ADB7FE} = {A3E34A75-8765-49F5-81EE-8FA983527479}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {893766FB-9CCC-48A5-AA14-73A422618107}

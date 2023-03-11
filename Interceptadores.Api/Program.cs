@@ -1,3 +1,4 @@
+using Interceptadores.Auditoria.Context;
 using Interceptadores.Data.Context;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,9 @@ namespace Interceptadores.Api
             {
                 InterceptadoresContext db = scope.ServiceProvider.GetRequiredService<InterceptadoresContext>();
                 db.Database.Migrate();
+
+                AuditoriaContext dba = new AuditoriaContext("Data Source=DESKTOP-STV0UEG\\SQLEXPRESS;Initial Catalog=InterceptadoresAuditoria;Persist Security Info=True;User ID=sa;Password=1234;Encrypt=False");
+                dba.Database.Migrate();
             }
 
             host.Run();

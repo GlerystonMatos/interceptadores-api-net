@@ -1,4 +1,5 @@
-﻿using Interceptadores.Data.Configuration;
+﻿using Interceptadores.Auditoria.Interceptor;
+using Interceptadores.Data.Configuration;
 using Interceptadores.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,9 +9,10 @@ namespace Interceptadores.Data.Context
 {
     public class InterceptadoresContext : DbContext
     {
+        private readonly AuditoriaInterceptor _auditoriaInterceptor;
+
         public InterceptadoresContext(DbContextOptions<InterceptadoresContext> options) : base(options)
-        {
-        }
+            => _auditoriaInterceptor = new AuditoriaInterceptor("Data Source=DESKTOP-STV0UEG\\SQLEXPRESS;Initial Catalog=InterceptadoresAuditoria;Persist Security Info=True;User ID=sa;Password=1234;Encrypt=False");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,5 +33,8 @@ namespace Interceptadores.Data.Context
 
             modelBuilder.Entity<Animal>().HasData(animais);
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+            => builder.AddInterceptors(_auditoriaInterceptor);
     }
 }
