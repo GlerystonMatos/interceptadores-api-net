@@ -18,7 +18,7 @@ namespace Interceptadores.Api
                 InterceptadoresContext db = scope.ServiceProvider.GetRequiredService<InterceptadoresContext>();
                 db.Database.Migrate();
 
-                AuditoriaContext dba = new AuditoriaContext("Data Source=DESKTOP-STV0UEG\\SQLEXPRESS;Initial Catalog=InterceptadoresAuditoria;Persist Security Info=True;User ID=sa;Password=1234;Encrypt=False");
+                AuditoriaContext dba = new AuditoriaContext("Data Source=10.0.0.131\\SQLEXPRESS;Initial Catalog=InterceptadoresAuditoria;Persist Security Info=True;User ID=sa;Password=1234;Encrypt=False");
                 dba.Database.Migrate();
             }
 

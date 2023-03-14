@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Interceptadores.Domain.Dto;
+using Interceptadores.Domain.Entities;
 using Interceptadores.Domain.Exception;
 using Interceptadores.Domain.Interfaces.Data;
 using Interceptadores.Domain.Interfaces.Services;
+using System;
 using System.Linq;
 
 namespace Interceptadores.Service.Services
@@ -18,6 +20,18 @@ namespace Interceptadores.Service.Services
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
         }
+
+        public void Criar(UsuarioDto usuario)
+            => _usuarioRepository.Criar(_mapper.Map<Usuario>(usuario));
+
+        public void Atualizar(UsuarioDto usuario)
+            => _usuarioRepository.Atualizar(_mapper.Map<Usuario>(usuario));
+
+        public void Remover(UsuarioDto usuario)
+            => _usuarioRepository.Remover(_mapper.Map<Usuario>(usuario));
+
+        public UsuarioDto PesquisarPorId(Guid id)
+            => _mapper.Map<UsuarioDto>(_usuarioRepository.PesquisarPorId(id));
 
         public IQueryable<UsuarioDto> ObterTodos()
             => _usuarioRepository.ObterTodos().ProjectTo<UsuarioDto>(_mapper.ConfigurationProvider);

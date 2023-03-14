@@ -12,7 +12,7 @@ namespace Interceptadores.Data.Context
         private readonly AuditoriaInterceptor _auditoriaInterceptor;
 
         public InterceptadoresContext(DbContextOptions<InterceptadoresContext> options) : base(options)
-            => _auditoriaInterceptor = new AuditoriaInterceptor("Data Source=DESKTOP-STV0UEG\\SQLEXPRESS;Initial Catalog=InterceptadoresAuditoria;Persist Security Info=True;User ID=sa;Password=1234;Encrypt=False");
+            => _auditoriaInterceptor = new AuditoriaInterceptor("Data Source=10.0.0.131\\SQLEXPRESS;Initial Catalog=InterceptadoresAuditoria;Persist Security Info=True;User ID=sa;Password=1234;Encrypt=False");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
