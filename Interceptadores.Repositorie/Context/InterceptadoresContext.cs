@@ -1,7 +1,10 @@
 ﻿using Interceptadores.Auditoria.Interceptor;
 using Interceptadores.Data.Configuration;
 using Interceptadores.Domain.Entities;
+using Interceptadores.Domain.Interfaces.Services;
+using Interceptadores.Domain.Tenant;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -9,10 +12,16 @@ namespace Interceptadores.Data.Context
 {
     public class InterceptadoresContext : DbContext
     {
-        private readonly AuditoriaInterceptor _auditoriaInterceptor;
+        private readonly ITenantService _tenantService;
+        private AuditoriaInterceptor _auditoriaInterceptor;
+        private readonly ILogger<InterceptadoresContext> _logger;
 
-        public InterceptadoresContext(DbContextOptions<InterceptadoresContext> options) : base(options)
-            => _auditoriaInterceptor = new AuditoriaInterceptor("Data Source=10.0.0.131\\SQLEXPRESS;Initial Catalog=InterceptadoresAuditoria;Persist Security Info=True;User ID=sa;Password=1234;Encrypt=False");
+        public InterceptadoresContext(DbContextOptions<InterceptadoresContext> options, ITenantService tenantService,
+            ILogger<InterceptadoresContext> logger) : base(options)
+        {
+            _logger = logger;
+            _tenantService = tenantService;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +44,18 @@ namespace Interceptadores.Data.Context
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
-            => builder.AddInterceptors(_auditoriaInterceptor);
+        {
+            TenantConfiguration configuration = _tenantService.Get();
+            if (configuration != null)
+            {
+                _auditoriaInterceptor = new AuditoriaInterceptor(configuration.ConnectionStringAuditoria);
+
+                builder.AddInterceptors(_auditoriaInterceptor);
+                builder.UseSqlServer(configuration.ConnectionStringDados);
+
+                _logger.LogInformation("ConnectionStringDados: " + configuration.ConnectionStringDados);
+                _logger.LogInformation("ConnectionStringAuditoria: " + configuration.ConnectionStringAuditoria);
+            }
+        }
     }
 }

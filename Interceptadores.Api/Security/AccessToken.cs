@@ -11,12 +11,13 @@ namespace Interceptadores.Api.Security
 {
     public static class AccessToken
     {
-        public static string GenerateToken(UsuarioDto UsuarioDto)
+        public static string GenerateToken(UsuarioDto UsuarioDto, string tenant)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(TokenConfig.SecretKey);
 
             IList<Claim> claim = new List<Claim>();
+            claim.Add(new Claim("tenant", tenant));
             claim.Add(new Claim(ClaimTypes.Name, UsuarioDto.Nome.ToString()));
 
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor

@@ -1,7 +1,9 @@
 using Interceptadores.Api.Configuracoes;
 using Interceptadores.Api.Middleware;
 using Interceptadores.CrossCutting;
+using Interceptadores.Domain.Tenant;
 using Interceptadores.Service.AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
@@ -19,16 +21,16 @@ namespace Interceptadores.Api
     {
         public Startup(IConfiguration configuration)
         {
+            _configuration = configuration;
             _name = configuration.GetValue<string>("Application:Name");
             _version = configuration.GetValue<string>("Application:Version");
-            _defaultConnection = configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
         }
 
         public string _name { get; }
 
         public string _version { get; }
 
-        public string _defaultConnection { get; }
+        public IConfiguration _configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -38,9 +40,11 @@ namespace Interceptadores.Api
                 .AddRouteComponents("OData", EdmModelConfig.GetEdmModel()));
 
             services.AddJwtSetup();
+            services.RegisterDependencies();
             services.AddSwaggerSetup(_name, _version);
             services.AddAutoMapper(typeof(AutoMapping));
-            services.RegisterDependencies(_defaultConnection);
+            services.Configure<TenantConfigurationSection>(_configuration);
+            services.AddScoped<IAuthorizationHandler, TenantMiddleware>();
 
             services.AddDataProtection()
                 .UseCryptographicAlgorithms(

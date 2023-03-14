@@ -2,9 +2,12 @@ using Interceptadores.Api.Security;
 using Interceptadores.Domain.Dto;
 using Interceptadores.Domain.Exception;
 using Interceptadores.Domain.Interfaces.Services;
+using Interceptadores.Domain.Tenant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Linq;
 
 namespace Interceptadores.Api.Controllers
 {
@@ -12,17 +15,22 @@ namespace Interceptadores.Api.Controllers
     [Route("[controller]")]
     public class LoginController : ControllerBase
     {
+        private readonly ITenantService _tenantService;
         private readonly IUsuarioService _usuarioService;
         private readonly ILogger<LoginController> _logger;
+        private readonly IOptions<TenantConfigurationSection> _options;
 
-        public LoginController(IUsuarioService usuarioService, ILogger<LoginController> logger)
+        public LoginController(ITenantService tenantService, IUsuarioService usuarioService, ILogger<LoginController> logger,
+            IOptions<TenantConfigurationSection> options)
         {
             _logger = logger;
+            _options = options;
+            _tenantService = tenantService;
             _usuarioService = usuarioService;
         }
 
         /// <summary>
-        /// Autenticar usuário da naja
+        /// Autenticar usuário
         /// </summary>
         /// <param name="login"></param>
         /// <response code="200">Usuário autenticado.</response>
@@ -34,10 +42,19 @@ namespace Interceptadores.Api.Controllers
         [ProducesResponseType(typeof(ExceptionMessage), 400)]
         public IActionResult Authenticate([FromBody] LoginDto login)
         {
+            TenantConfiguration tenant = _options.Value.Tenants.Where(t => t.Name.Equals(login.Tenant)).SingleOrDefault();
+            if (tenant == null)
+            {
+                tenant = _options.Value.Tenants.Where(t => t.Name.Equals("Tenant00")).SingleOrDefault();
+            }
+
+            _tenantService.Set(tenant);
+            _logger.LogInformation("Tenant: " + tenant.Name);
+
             UsuarioDto usuarioDto = _usuarioService.ObterUsuarioParaAutenticacao(login);
             _logger.LogInformation("Login realizado: " + usuarioDto.Nome);
 
-            return Ok(new TokenDto(AccessToken.GenerateToken(usuarioDto)));
+            return Ok(new TokenDto(AccessToken.GenerateToken(usuarioDto, tenant.Name)));
         }
 
         /// <summary>
@@ -52,6 +69,10 @@ namespace Interceptadores.Api.Controllers
         [ProducesResponseType(typeof(ExceptionMessage), 200)]
         [ProducesResponseType(typeof(ExceptionMessage), 400)]
         public IActionResult Authenticated()
-            => Ok(new ExceptionMessage(string.Format("Usuário autenticado - {0}", User.Identity.Name)));
+        {
+            TenantConfiguration configuration = _tenantService.Get();
+            _logger.LogInformation("Tenant: " + configuration.Name);
+            return Ok(new ExceptionMessage(string.Format("Usuário autenticado - {0}", User.Identity.Name)));
+        }
     }
 }

@@ -106,7 +106,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"senha\": \"1234\",\r\n    \"login\": \"Teste01\"\r\n}",
+									"raw": "{\r\n    \"senha\": \"1234\",\r\n    \"login\": \"Teste01\",\r\n    \"tenant\": \"Tenant00\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"

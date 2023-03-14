@@ -11,5 +11,8 @@ namespace Interceptadores.Domain.Dto
 
         [Required(ErrorMessage = "Campo 'Senha' obrigatório")]
         public string Senha { get; set; }
+
+        [Required(ErrorMessage = "Campo 'Tenant' obrigatório")]
+        public string Tenant { get; set; }
     }
 }
