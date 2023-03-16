@@ -78,7 +78,7 @@
 					"name": "Authenticate",
 					"item": [
 						{
-							"name": "/Login/Authenticate",
+							"name": "/Login/Authenticate Teste01 Tenant00",
 							"event": [
 								{
 									"listen": "test",
@@ -107,6 +107,153 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"senha\": \"1234\",\r\n    \"login\": \"Teste01\",\r\n    \"tenant\": \"Tenant00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/Login/Authenticate",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Login",
+										"Authenticate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/Login/Authenticate Teste01 Tenant01",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+											"",
+											"try {",
+											"    responseJSON = JSON.parse(responseBody);",
+											"    tests['resposta é um JSON válido'] = true;",
+											"}",
+											"catch (e) {",
+											"    responseJSON = {};",
+											"    tests['resposta não é um JSON válido'] = false;",
+											"}",
+											"",
+											"pm.environment.set(\"token\", responseJSON.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"senha\": \"1234\",\r\n    \"login\": \"Teste01\",\r\n    \"tenant\": \"Tenant01\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/Login/Authenticate",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Login",
+										"Authenticate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/Login/Authenticate Teste02 Tenant00",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+											"",
+											"try {",
+											"    responseJSON = JSON.parse(responseBody);",
+											"    tests['resposta é um JSON válido'] = true;",
+											"}",
+											"catch (e) {",
+											"    responseJSON = {};",
+											"    tests['resposta não é um JSON válido'] = false;",
+											"}",
+											"",
+											"pm.environment.set(\"token\", responseJSON.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"senha\": \"4567\",\r\n    \"login\": \"Teste02\",\r\n    \"tenant\": \"Tenant00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/Login/Authenticate",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Login",
+										"Authenticate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/Login/Authenticate Teste02 Tenant01",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"tests[\"status é igual a 200\"] = responseCode.code === 200;",
+											"",
+											"try {",
+											"    responseJSON = JSON.parse(responseBody);",
+											"    tests['resposta é um JSON válido'] = true;",
+											"}",
+											"catch (e) {",
+											"    responseJSON = {};",
+											"    tests['resposta não é um JSON válido'] = false;",
+											"}",
+											"",
+											"pm.environment.set(\"token\", responseJSON.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"senha\": \"4567\",\r\n    \"login\": \"Teste02\",\r\n    \"tenant\": \"Tenant01\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"

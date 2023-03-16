@@ -48,7 +48,7 @@ namespace Interceptadores.Data.Context
             TenantConfiguration configuration = _tenantService.Get();
             if (configuration != null)
             {
-                _auditoriaInterceptor = new AuditoriaInterceptor(configuration.ConnectionStringAuditoria);
+                _auditoriaInterceptor = new AuditoriaInterceptor(configuration.ConnectionStringAuditoria, _tenantService.GetUser());
 
                 builder.AddInterceptors(_auditoriaInterceptor);
                 builder.UseSqlServer(configuration.ConnectionStringDados);

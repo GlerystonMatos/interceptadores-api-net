@@ -17,7 +17,7 @@ namespace Interceptadores.Auditoria.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -29,6 +29,10 @@ namespace Interceptadores.Auditoria.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AuditMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuditUser")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

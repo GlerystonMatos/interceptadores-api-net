@@ -8,11 +8,15 @@ namespace Interceptadores.Auditoria.Interceptor
 {
     public class AuditoriaInterceptor : ISaveChangesInterceptor
     {
+        private readonly string _user;
         private readonly string _connectionString;
         private SaveChangesAudit _saveChangesAudit = new SaveChangesAudit();
 
-        public AuditoriaInterceptor(string connectionString)
-            => _connectionString = connectionString;
+        public AuditoriaInterceptor(string connectionString, string user)
+        {
+            _user = user;
+            _connectionString = connectionString;
+        }
 
         #region SavingChanges
         public async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
@@ -20,7 +24,7 @@ namespace Interceptadores.Auditoria.Interceptor
         {
             if (eventData.Context != null)
             {
-                _saveChangesAudit = CreateAudit(eventData.Context);
+                _saveChangesAudit = CreateAudit(eventData.Context, _user);
 
                 using AuditoriaContext auditoriaContext = new AuditoriaContext(_connectionString);
 
@@ -35,7 +39,7 @@ namespace Interceptadores.Auditoria.Interceptor
         {
             if (eventData.Context != null)
             {
-                _saveChangesAudit = CreateAudit(eventData.Context);
+                _saveChangesAudit = CreateAudit(eventData.Context, _user);
 
                 using AuditoriaContext auditoriaContext = new AuditoriaContext(_connectionString);
                 auditoriaContext.Add(_saveChangesAudit);
@@ -106,7 +110,7 @@ namespace Interceptadores.Auditoria.Interceptor
         #endregion
 
         #region CreateAudit
-        private static SaveChangesAudit CreateAudit(DbContext context)
+        private static SaveChangesAudit CreateAudit(DbContext context, string user)
         {
             context.ChangeTracker.DetectChanges();
 
@@ -130,9 +134,10 @@ namespace Interceptadores.Auditoria.Interceptor
                 {
                     saveChangesAudit.Entities.Add(new EntityAudit
                     {
+                        AuditUser = user,
                         State = entityEntry.State,
-                        AuditMessage = auditMessage
-                    });
+                        AuditMessage = auditMessage,
+                    }); ;
                 }
             }
 

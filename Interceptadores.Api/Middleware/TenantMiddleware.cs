@@ -24,6 +24,7 @@ namespace Interceptadores.Api.Middleware
 
         public Task HandleAsync(AuthorizationHandlerContext context)
         {
+            string user = "";
             TenantConfiguration tenant = _options.Value.Tenants.Where(t => t.Name.Equals("Tenant00")).SingleOrDefault();
 
             Claim clain = context.User.Claims.Where(c => c.Type.Equals("tenant")).SingleOrDefault();
@@ -32,7 +33,15 @@ namespace Interceptadores.Api.Middleware
                 tenant = _options.Value.Tenants.Where(t => t.Name.Equals(clain.Value)).SingleOrDefault();
             }
 
+            clain = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Name)).SingleOrDefault();
+            if (clain != null)
+            {
+                user = clain.Value;
+            }
+
             _tenantService.Set(tenant);
+            _tenantService.SetUser(user);
+            _logger.LogInformation("User: " + user);
             _logger.LogInformation("Tenant: " + tenant.Name);
 
             return Task.CompletedTask;

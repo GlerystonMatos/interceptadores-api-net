@@ -11,6 +11,7 @@ namespace Interceptadores.Auditoria.Configuration
             builder.HasKey(a => a.Id);
             builder.Property(a => a.Id).IsRequired();
             builder.Property(a => a.State).IsRequired();
+            builder.Property(a => a.AuditUser).IsRequired();
             builder.Property(a => a.AuditMessage).IsRequired();
             builder.Property(a => a.SaveChangesAuditId).IsRequired();
             builder.HasOne(a => a.SaveChangesAudit).WithMany(s => s.Entities).HasForeignKey(a => a.SaveChangesAuditId).OnDelete(DeleteBehavior.Restrict);

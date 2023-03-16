@@ -49,6 +49,8 @@ namespace Interceptadores.Api.Controllers
             }
 
             _tenantService.Set(tenant);
+            _tenantService.SetUser(login.Login);
+            _logger.LogInformation("User: " + login.Login);
             _logger.LogInformation("Tenant: " + tenant.Name);
 
             UsuarioDto usuarioDto = _usuarioService.ObterUsuarioParaAutenticacao(login);

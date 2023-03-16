@@ -6,12 +6,15 @@ namespace Interceptadores.Auditoria.Entities
     {
         public EntityAudit()
         {
+            AuditUser = "";
             AuditMessage = "";
             Id = Guid.NewGuid();
             SaveChangesAudit = new SaveChangesAudit();
         }
 
         public Guid Id { get; set; }
+
+        public string AuditUser { get; set; }
 
         public EntityState State { get; set; }
 

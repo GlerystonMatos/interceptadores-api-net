@@ -6,6 +6,10 @@ namespace Interceptadores.Domain.Interfaces.Services
     {
         TenantConfiguration Get();
 
+        string GetUser();
+
         void Set(TenantConfiguration tenant);
+
+        void SetUser(string user);
     }
 }
